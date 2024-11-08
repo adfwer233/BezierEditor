@@ -65,6 +65,7 @@ add_library(${PROJECT_NAME} SHARED
 )
 
 add_definitions(-DMODEL_PATH="${CMAKE_SOURCE_DIR}/external/models")
+add_definitions(-DSHADER_DIR="${CMAKE_CURRENT_SOURCE_DIR}/shader")
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${GRAPHICS_LAB_INSTALL_PATH}/include)
 target_include_directories(${PROJECT_NAME} PUBLIC ${VK_SDK_INCLUDE})
@@ -93,3 +94,8 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
         --build-type "$<CONFIG>"  # CONFIG will be Debug, Release, etc.
         COMMENT "Updating ${OUTPUT_JSON} with DLL path and build type"
 )
+
+add_subdirectory(shader)
+if (GLSL_VALIDATOR)
+    add_dependencies(${PROJECT_NAME} build_shaders)
+endif ()
